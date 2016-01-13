@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="main-header text-center">
+    <div class="elements">
+        <h2>Welcome to PLE<span>X</span></h2>
+        Hello 
+        <% if current_user && current_user.editor? %> 
+          <p class="recipe-edit"> 
+            Editor 
+          </p> 
+        <% elsif current_user && current_user.admin? %>
+        <p class="recipe-edit"> 
+            Admin 
+          </p> 
+          <% provide(:title, 'All users') %>
+          <h1>All users</h1>
+          
+          <ul class="users">
+            <% @users.each do |user| %>
+              <ul>
+                <li>
+                  <%= user.first_name %>
+                </li>
+                <li>
+                  <%= user.last_name%>
+                </li>
+                <li>
+                  <%= user.email %>
+                </li>
+                <li>
+                  <%= link_to "delete", user , method: :delete, data: { confirm: "You sure?" } %>
+                </li>
+              </ul>
+            <% end %>
+          </ul>
+        <% end %>
+          <% flash.each do |message_type, message| %>
+            <div class="alert alert-<%= message_type %>"><%= message %></div>
+          <% end %>
+    </div>
+  </div>
+</div> <!-- /container -->
