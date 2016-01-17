@@ -18,6 +18,7 @@ class SessionsController < ApplicationController
         url = URI.parse('https://plex.tv/users/sign_in.json')
         @resp = HTTParty.post(url, :headers => headers)
         
+        
         if @resp.code == 401
             flash[:danger] = "Error!!! Usuario o Password Incorrectos..."
 	    	redirect_to '/login'
@@ -25,8 +26,10 @@ class SessionsController < ApplicationController
         else
             urlplex = URI.parse('https://plex.tv/api/servers')
             @texto = HTTParty.get(urlplex, :headers => {"X-Plex-Token" => @resp["user"]["authentication_token"]})
+	    	plexserver = @texto["MediaContainer"].has_key? "Server"
 	    	
-	    	if @texto["MediaContainer"]["Server"]["sourceTitle"] != "carlosepc"
+            session["resp"] = plexserver
+	    	if !plexserver && plexserver !="carlosepc"
                 flash[:danger] = "Lo sentimos!!! Su servidor no esta registrado en nuestra base de datos..."
     	    	redirect_to '/login'
 	    	else
