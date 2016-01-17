@@ -1,5 +1,8 @@
 <div class="footer">
   <div class="container">
+    <% flash.each do |message_type, message| %>
+      <div class="alert alert-<%= message_type %>"><%= message %></div>
+    <% end %>
     <p class="text-muted">Copyright &copy;</p>
   </div>
 </div>
